@@ -123,11 +123,6 @@ aws kms create-alias \
 
 You see that the origin of the key instance is __EXTERNAL__ and the key state is __PendingImport__.
 
-### Manage the key policy
-
->__Important__
-Do not set the Principal to an asterisk (*) in any key policy statement that allows permissions unless you use conditions to limit the key policy. An asterisk gives every identity in every AWS account permission to use the KMS key, unless another policy statement explicitly denies it. Users in other AWS accounts can use your KMS key whenever they have corresponding permissions in their own account.
-
 ### Generate the key material
 You can use openssl to generate the key material in plain text.
 
@@ -250,6 +245,12 @@ You should see in the DynamoDB table message an entry with _This is my message b
 
 
 ## Improvement of the security
+
+### Manage the key policy
+
+>__Important__
+Do not set the Principal to an asterisk (*) in any key policy statement that allows permissions unless you use conditions to limit the key policy. An asterisk gives every identity in every AWS account permission to use the KMS key, unless another policy statement explicitly denies it. Users in other AWS accounts can use your KMS key whenever they have corresponding permissions in their own account.
+
 ### The key policy
 
 If you look at the key policy of the AWS KMS Key, you will see that it's the default key policy allowing all trusted entities (users/roles) to interact with the key.
@@ -324,8 +325,8 @@ Here is an example of key policy :
 For deploying this example, we were assuming the DevOpsRole, it's the reason for using it as principal for the administration and for writing and reading for the test.
 The role of the lambda is receiving the permissions for using the key but not managing it.
 
-> <font color="red">Be careful to not delete the DevOpsRole, you will lose the control of the key policy.
-There is a complex procedure to recover it. You have to open a support ticket.</font>
+>__Important__ Be careful to not delete the DevOpsRole, you will lose the control of the key policy.
+There is a complex procedure to recover it. You have to open a support.
 
 
 ```
@@ -338,6 +339,7 @@ aws kms put-key-policy \
 
 
 #### What should be improved to be production ready
+- The generation of the key material (not it's import) made via openssl (depending on the version) could be considered in some cases as weak.
 - The permission for the administration of the key is too lax
     - creating a specific role to admin the keys in the account and a group in our authentication account to assume that role
 - We should block the possibility to use the role in another lamba (it's the role that has the permission to decrypt)
