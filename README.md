@@ -74,8 +74,8 @@ The iam user used to run the AWS CLI commands has the following permissions :
 
 ### Create an AWS KMS external key
 You need to create a KMS key with no key material.
-We recommand 
-- to set properly the main region. (The recommanded region is Ireland - eu-west-1)
+We recommend 
+- to set properly the main region. (The recommended region is Ireland - eu-west-1)
 - to have a multi-region key
 
 ```
@@ -126,7 +126,7 @@ You see that the origin of the key instance is __EXTERNAL__ and the key state is
 ### Generate the key material
 You can use openssl to generate the key material in plain text.
 
-<font color="red">AWS consider openssl key material generation too weak for production environment.</font>
+<font color="red">Alternatively, if you consider openssl generated key material does not fit yuor security requirements AWS proposes a solution for production environment.</font>
 
 See https://aws.amazon.com/blogs/security/how-to-byok-bring-your-own-key-to-aws-kms-for-less-than-15-00-a-year-using-aws-cloudhsm/
 
@@ -326,7 +326,7 @@ For deploying this example, we were assuming the DevOpsRole, it's the reason for
 The role of the lambda is receiving the permissions for using the key but not managing it.
 
 >__Important__ Be careful to not delete the DevOpsRole, you will lose the control of the key policy.
-There is a complex procedure to recover it. You have to open a support.
+There is a complex procedure to recover it. You have to open a support ticket with AWS.
 
 
 ```
